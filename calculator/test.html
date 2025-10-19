@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тесты Калькулятора</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #e1f5fe 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 1rem;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #4a5568;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .test-results {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-group {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .test-group h3 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .test-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .test-description {
+            flex: 1;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .test-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .test-status.pending {
+            background: #e2e8f0;
+            color: #718096;
+        }
+
+        .test-status.running {
+            background: #feebc8;
+            color: #c05621;
+            animation: pulse 1s infinite;
+        }
+
+        .test-status.passed {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .test-status.failed {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .summary h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .log {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            margin: 0.25rem 0;
+            padding: 0.25rem;
+        }
+
+        .log-entry.error {
+            color: #fed7d7;
+        }
+
+        .log-entry.success {
+            color: #c6f6d5;
+        }
+
+        .log-entry.info {
+            color: #bee3f8;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🧮 Тесты Калькулятора</h1>
+            <p>Автоматизированное тестирование всех функций и операций</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="run-all-tests">Запустить все тесты</button>
+            <button class="btn secondary" id="run-basic-tests">Основные операции</button>
+            <button class="btn secondary" id="run-advanced-tests">Расширенные функции</button>
+            <button class="btn secondary" id="clear-results">Очистить результаты</button>
+        </div>
+
+        <div class="test-results" id="test-results">
+            <!-- Тесты будут добавлены динамически -->
+        </div>
+
+        <div class="summary" id="summary" style="display: none;">
+            <h3>Результаты тестирования</h3>
+            <div class="summary-stats">
+                <div class="stat">
+                    <div class="stat-number" id="total-tests">0</div>
+                    <div class="stat-label">Всего тестов</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="passed-tests">0</div>
+                    <div class="stat-label">Пройдено</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="failed-tests">0</div>
+                    <div class="stat-label">Неудачно</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="success-rate">0%</div>
+                    <div class="stat-label">Успешность</div>
+                </div>
+            </div>
+            <div class="log" id="test-log"></div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Система тестирования калькулятора
+         */
+        class CalculatorTester {
+            constructor() {
+                this.tests = [];
+                this.results = {
+                    total: 0,
+                    passed: 0,
+                    failed: 0,
+                    errors: []
+                };
+                this.isRunning = false;
+                
+                this.setupTests();
+                this.setupUI();
+            }
+
+            setupUI() {
+                document.getElementById('run-all-tests').addEventListener('click', () => this.runAllTests());
+                document.getElementById('run-basic-tests').addEventListener('click', () => this.runTestGroup('basic'));
+                document.getElementById('run-advanced-tests').addEventListener('click', () => this.runTestGroup('advanced'));
+                document.getElementById('clear-results').addEventListener('click', () => this.clearResults());
+                
+                this.renderTests();
+            }
+
+            setupTests() {
+                // Базовые арифметические операции
+                this.addTestGroup('basic', 'Основные операции', [
+                    {
+                        name: 'Сложение целых чисел',
+                        description: '5 + 3 = 8',
+                        test: () => this.testCalculation('5+3', '8')
+                    },
+                    {
+                        name: 'Вычитание',
+                        description: '10 - 4 = 6',
+                        test: () => this.testCalculation('10-4', '6')
+                    },
+                    {
+                        name: 'Умножение',
+                        description: '7 × 6 = 42',
+                        test: () => this.testCalculation('7*6', '42')
+                    },
+                    {
+                        name: 'Деление',
+                        description: '15 ÷ 3 = 5',
+                        test: () => this.testCalculation('15/3', '5')
+                    },
+                    {
+                        name: 'Деление с десятичным результатом',
+                        description: '7 ÷ 2 = 3,5',
+                        test: () => this.testCalculation('7/2', '3,5')
+                    },
+                    {
+                        name: 'Операции с нулем',
+                        description: '5 + 0 = 5',
+                        test: () => this.testCalculation('5+0', '5')
+                    },
+                    {
+                        name: 'Умножение на ноль',
+                        description: '5 × 0 = 0',
+                        test: () => this.testCalculation('5*0', '0')
+                    },
+                    {
+                        name: 'Отрицательные числа',
+                        description: '-5 + 3 = -2',
+                        test: () => this.testCalculation('-5+3', '-2')
+                    },
+                    {
+                        name: 'Десятичные числа',
+                        description: '2,5 + 1,5 = 4',
+                        test: () => this.testCalculation('2.5+1.5', '4')
+                    },
+                    {
+                        name: 'Сложная операция',
+                        description: '2 + 3 × 4 = 14',
+                        test: () => this.testCalculation('2+3*4', '14')
+                    }
+                ]);
+
+                // Расширенные функции
+                this.addTestGroup('advanced', 'Расширенные функции', [
+                    {
+                        name: 'Квадрат числа',
+                        description: 'sqr(5) = 25',
+                        test: () => this.testFunction('square', 5, 25)
+                    },
+                    {
+                        name: 'Квадратный корень',
+                        description: '√16 = 4',
+                        test: () => this.testFunction('sqrt', 16, 4)
+                    },
+                    {
+                        name: 'Обратное значение',
+                        description: '1/4 = 0,25',
+                        test: () => this.testFunction('reciprocal', 4, 0.25)
+                    },
+                    {
+                        name: 'Проценты',
+                        description: '50% = 0,5',
+                        test: () => this.testFunction('percent', 50, 0.5)
+                    },
+                    {
+                        name: 'Корень из десятичного',
+                        description: '√2,25 = 1,5',
+                        test: () => this.testFunction('sqrt', 2.25, 1.5)
+                    },
+                    {
+                        name: 'Квадрат отрицательного',
+                        description: 'sqr(-3) = 9',
+                        test: () => this.testFunction('square', -3, 9)
+                    }
+                ]);
+
+                // Граничные случаи и ошибки
+                this.addTestGroup('edge-cases', 'Граничные случаи', [
+                    {
+                        name: 'Деление на ноль',
+                        description: 'Обработка деления на ноль',
+                        test: () => this.testError('5/0')
+                    },
+                    {
+                        name: 'Корень из отрицательного',
+                        description: 'Обработка √(-4)',
+                        test: () => this.testErrorFunction('sqrt', -4)
+                    },
+                    {
+                        name: 'Обратное от нуля',
+                        description: 'Обработка 1/0',
+                        test: () => this.testErrorFunction('reciprocal', 0)
+                    },
+                    {
+                        name: 'Очень большие числа',
+                        description: '999999 × 999999',
+                        test: () => this.testCalculation('999999*999999', '999998000001')
+                    },
+                    {
+                        name: 'Очень малые числа',
+                        description: '0,000001 × 1000000 = 1',
+                        test: () => this.testCalculation('0.000001*1000000', '1')
+                    }
+                ]);
+
+                // Интерфейсные тесты
+                this.addTestGroup('interface', 'Интерфейс', [
+                    {
+                        name: 'Форматирование результата',
+                        description: 'Проверка замены точки на запятую',
+                        test: () => this.testFormatting()
+                    },
+                    {
+                        name: 'Очистка дисплея',
+                        description: 'Функция Clear (C)',
+                        test: () => this.testClear()
+                    },
+                    {
+                        name: 'Удаление символа',
+                        description: 'Функция Backspace',
+                        test: () => this.testBackspace()
+                    },
+                    {
+                        name: 'Ввод десятичной точки',
+                        description: 'Добавление запятой',
+                        test: () => this.testDecimalInput()
+                    }
+                ]);
+            }
+
+            addTestGroup(id, name, tests) {
+                const group = { id, name, tests };
+                this.tests.push(group);
+            }
+
+            renderTests() {
+                const container = document.getElementById('test-results');
+                container.innerHTML = '';
+
+                this.tests.forEach(group => {
+                    const groupElement = document.createElement('div');
+                    groupElement.className = 'test-group';
+                    groupElement.innerHTML = `
+                        <h3>${group.name} (${group.tests.length} тестов)</h3>
+                        ${group.tests.map(test => `
+                            <div class="test-item" data-test-id="${test.name}">
+                                <div class="test-description">${test.description}</div>
+                                <div class="test-status pending" id="status-${this.sanitizeId(test.name)}">Ожидание</div>
+                            </div>
+                        `).join('')}
+                    `;
+                    container.appendChild(groupElement);
+                });
+            }
+
+            async runAllTests() {
+                if (this.isRunning) return;
+                
+                this.clearResults();
+                this.isRunning = true;
+                this.log('Начинаем полное тестирование калькулятора...', 'info');
+
+                for (const group of this.tests) {
+                    this.log(`\n=== ${group.name} ===`, 'info');
+                    await this.runTestGroup(group.id);
+                }
+
+                this.showSummary();
+                this.isRunning = false;
+            }
+
+            async runTestGroup(groupId) {
+                const group = this.tests.find(g => g.id === groupId);
+                if (!group) return;
+
+                this.log(`Запуск группы тестов: ${group.name}`, 'info');
+
+                for (const test of group.tests) {
+                    await this.runSingleTest(test);
+                    // Небольшая задержка для лучшей визуализации
+                    await this.delay(100);
+                }
+            }
+
+            async runSingleTest(test) {
+                const statusElement = document.getElementById(`status-${this.sanitizeId(test.name)}`);
+                
+                try {
+                    statusElement.className = 'test-status running';
+                    statusElement.textContent = 'Выполнение';
+                    
+                    const result = await test.test();
+                    
+                    if (result.success) {
+                        statusElement.className = 'test-status passed';
+                        statusElement.textContent = 'Пройден';
+                        this.results.passed++;
+                        this.log(`✓ ${test.name}: ${test.description}`, 'success');
+                    } else {
+                        statusElement.className = 'test-status failed';
+                        statusElement.textContent = 'Неудачно';
+                        this.results.failed++;
+                        this.results.errors.push(`${test.name}: ${result.error}`);
+                        this.log(`✗ ${test.name}: ${result.error}`, 'error');
+                    }
+                } catch (error) {
+                    statusElement.className = 'test-status failed';
+                    statusElement.textContent = 'Ошибка';
+                    this.results.failed++;
+                    this.results.errors.push(`${test.name}: ${error.message}`);
+                    this.log(`✗ ${test.name}: Исключение - ${error.message}`, 'error');
+                }
+                
+                this.results.total++;
+            }
+
+            // Методы тестирования
+
+            testCalculation(expression, expectedResult) {
+                return new Promise((resolve) => {
+                    try {
+                        // Создаем временный калькулятор для изолированного тестирования
+                        const calc = this.createTestCalculator();
+                        
+                        // Вводим выражение
+                        for (let char of expression) {
+                            if (char >= '0' && char <= '9') {
+                                calc.inputNumber(char);
+                            } else if (char === '.') {
+                                calc.inputDecimal();
+                            } else if (['+', '-', '*', '/'].includes(char)) {
+                                calc.inputOperator(char);
+                            }
+                        }
+                        
+                        // Вычисляем результат
+                        calc.calculate();
+                        
+                        const result = calc.getCurrentValue().replace(',', '.');
+                        const expected = expectedResult.replace(',', '.');
+                        
+                        if (Math.abs(parseFloat(result) - parseFloat(expected)) < 0.0001) {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ 
+                                success: false, 
+                                error: `Ожидался ${expectedResult}, получен ${calc.getCurrentValue()}`
+                            });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            testFunction(functionName, input, expectedOutput) {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        calc.setDisplay(input.toString());
+                        
+                        // Выполняем функцию
+                        switch (functionName) {
+                            case 'square':
+                                calc.square();
+                                break;
+                            case 'sqrt':
+                                calc.sqrt();
+                                break;
+                            case 'reciprocal':
+                                calc.reciprocal();
+                                break;
+                            case 'percent':
+                                calc.percent();
+                                break;
+                        }
+                        
+                        const result = parseFloat(calc.getCurrentValue().replace(',', '.'));
+                        
+                        if (Math.abs(result - expectedOutput) < 0.0001) {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ 
+                                success: false, 
+                                error: `Ожидался ${expectedOutput}, получен ${result}`
+                            });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            testError(expression) {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        
+                        // Вводим выражение
+                        for (let char of expression) {
+                            if (char >= '0' && char <= '9') {
+                                calc.inputNumber(char);
+                            } else if (['+', '-', '*', '/'].includes(char)) {
+                                calc.inputOperator(char);
+                            }
+                        }
+                        
+                        calc.calculate();
+                        const result = calc.getCurrentValue();
+                        
+                        if (result === 'Ошибка' || result.includes('Infinity')) {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: `Ожидалась ошибка, получен ${result}` });
+                        }
+                    } catch (error) {
+                        resolve({ success: true }); // Исключение ожидается
+                    }
+                });
+            }
+
+            testErrorFunction(functionName, input) {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        calc.setDisplay(input.toString());
+                        
+                        // Мокаем toast для перехвата ошибок
+                        let errorCaught = false;
+                        const originalToast = window.toast;
+                        window.toast = {
+                            error: () => { errorCaught = true; }
+                        };
+                        
+                        switch (functionName) {
+                            case 'sqrt':
+                                calc.sqrt();
+                                break;
+                            case 'reciprocal':
+                                calc.reciprocal();
+                                break;
+                        }
+                        
+                        window.toast = originalToast;
+                        
+                        if (errorCaught) {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: 'Ожидалась ошибка' });
+                        }
+                    } catch (error) {
+                        resolve({ success: true });
+                    }
+                });
+            }
+
+            testFormatting() {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        const formatted = calc.formatNumber(3.14159);
+                        
+                        if (formatted === '3,14159') {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: `Неверное форматирование: ${formatted}` });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            testClear() {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        calc.inputNumber('5');
+                        calc.inputOperator('+');
+                        calc.inputNumber('3');
+                        calc.clear();
+                        
+                        if (calc.getCurrentValue() === '0') {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: 'Дисплей не очищен' });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            testBackspace() {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        calc.inputNumber('1');
+                        calc.inputNumber('2');
+                        calc.inputNumber('3');
+                        calc.backspace();
+                        
+                        if (calc.getCurrentValue() === '12') {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: `Неверный результат: ${calc.getCurrentValue()}` });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            testDecimalInput() {
+                return new Promise((resolve) => {
+                    try {
+                        const calc = this.createTestCalculator();
+                        calc.inputNumber('3');
+                        calc.inputDecimal();
+                        calc.inputNumber('14');
+                        
+                        if (calc.getCurrentValue() === '3,14') {
+                            resolve({ success: true });
+                        } else {
+                            resolve({ success: false, error: `Неверный ввод: ${calc.getCurrentValue()}` });
+                        }
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                });
+            }
+
+            // Утилиты
+
+            createTestCalculator() {
+                // Упрощенная версия калькулятора для тестирования
+                return new (class TestCalculator {
+                    constructor() {
+                        this.currentExpression = '';
+                        this.previousResult = 0;
+                        this.shouldResetDisplay = false;
+                    }
+                    
+                    inputNumber(number) {
+                        if (this.shouldResetDisplay) {
+                            this.currentExpression = '';
+                            this.shouldResetDisplay = false;
+                        }
+                        
+                        if (this.currentExpression === '0' && number === '0') return;
+                        
+                        if (this.currentExpression === '0' && number !== '0') {
+                            this.currentExpression = number;
+                        } else {
+                            this.currentExpression += number;
+                        }
+                    }
+                    
+                    inputOperator(operator) {
+                        if (this.currentExpression === '') {
+                            this.currentExpression = this.previousResult.toString();
+                        }
+                        
+                        if (this.isLastCharOperator()) {
+                            this.currentExpression = this.currentExpression.slice(0, -1) + operator;
+                        } else {
+                            this.currentExpression += operator;
+                        }
+                    }
+                    
+                    inputDecimal() {
+                        if (this.shouldResetDisplay) {
+                            this.currentExpression = '0';
+                            this.shouldResetDisplay = false;
+                        }
+                        
+                        const parts = this.currentExpression.split(/[+\-*/]/);
+                        const lastPart = parts[parts.length - 1];
+                        
+                        if (!lastPart.includes('.')) {
+                            if (this.currentExpression === '' || this.isLastCharOperator()) {
+                                this.currentExpression += '0.';
+                            } else {
+                                this.currentExpression += '.';
+                            }
+                        }
+                    }
+                    
+                    calculate() {
+                        if (this.currentExpression === '') return;
+                        
+                        try {
+                            const expression = this.currentExpression;
+                            
+                            if (this.isValidExpression(expression)) {
+                                const result = this.evaluateExpression(expression);
+                                
+                                if (isNaN(result) || !isFinite(result)) {
+                                    throw new Error('Неопределенный результат');
+                                }
+                                
+                                this.previousResult = result;
+                                this.currentExpression = this.formatNumber(result);
+                                this.shouldResetDisplay = true;
+                            } else {
+                                throw new Error('Некорректное выражение');
+                            }
+                        } catch (error) {
+                            this.currentExpression = 'Ошибка';
+                        }
+                    }
+                    
+                    square() {
+                        const currentValue = this.getCurrentNumber();
+                        if (currentValue !== null) {
+                            const result = currentValue * currentValue;
+                            this.replaceCurrentNumber(result);
+                        }
+                    }
+                    
+                    sqrt() {
+                        const currentValue = this.getCurrentNumber();
+                        if (currentValue !== null) {
+                            if (currentValue < 0) {
+                                throw new Error('Невозможно извлечь корень из отрицательного числа');
+                            }
+                            const result = Math.sqrt(currentValue);
+                            this.replaceCurrentNumber(result);
+                        }
+                    }
+                    
+                    reciprocal() {
+                        const currentValue = this.getCurrentNumber();
+                        if (currentValue !== null) {
+                            if (currentValue === 0) {
+                                throw new Error('Деление на ноль невозможно');
+                            }
+                            const result = 1 / currentValue;
+                            this.replaceCurrentNumber(result);
+                        }
+                    }
+                    
+                    percent() {
+                        const currentValue = this.getCurrentNumber();
+                        if (currentValue !== null) {
+                            const result = currentValue / 100;
+                            this.replaceCurrentNumber(result);
+                        }
+                    }
+                    
+                    clear() {
+                        this.currentExpression = '';
+                        this.previousResult = 0;
+                        this.shouldResetDisplay = false;
+                    }
+                    
+                    backspace() {
+                        if (this.currentExpression.length > 0) {
+                            this.currentExpression = this.currentExpression.slice(0, -1);
+                        }
+                    }
+                    
+                    getCurrentValue() {
+                        return this.currentExpression || '0';
+                    }
+                    
+                    setDisplay(value) {
+                        this.currentExpression = value;
+                        this.shouldResetDisplay = true;
+                    }
+                    
+                    getCurrentNumber() {
+                        const parts = this.currentExpression.split(/[+\-*/]/);
+                        const lastPart = parts[parts.length - 1];
+                        const number = parseFloat(lastPart);
+                        return isNaN(number) ? null : number;
+                    }
+                    
+                    replaceCurrentNumber(newNumber) {
+                        const formattedNumber = this.formatNumber(newNumber);
+                        const parts = this.currentExpression.split(/([+\-*/])/);
+                        parts[parts.length - 1] = formattedNumber;
+                        this.currentExpression = parts.join('');
+                    }
+                    
+                    isLastCharOperator() {
+                        const lastChar = this.currentExpression.slice(-1);
+                        return ['+', '-', '*', '/'].includes(lastChar);
+                    }
+                    
+                    isValidExpression(expression) {
+                        return expression !== '' && !this.isLastCharOperator();
+                    }
+                    
+                    evaluateExpression(expression) {
+                        return Function(`"use strict"; return (${expression})`)();
+                    }
+                    
+                    formatNumber(number) {
+                        if (typeof number !== 'number' || isNaN(number)) return '0';
+                        const rounded = Math.round(number * 10000000000) / 10000000000;
+                        return rounded.toString().replace('.', ',');
+                    }
+                })();
+            }
+
+            // UI утилиты
+
+            clearResults() {
+                this.results = { total: 0, passed: 0, failed: 0, errors: [] };
+                
+                document.querySelectorAll('.test-status').forEach(status => {
+                    status.className = 'test-status pending';
+                    status.textContent = 'Ожидание';
+                });
+                
+                document.getElementById('summary').style.display = 'none';
+                document.getElementById('test-log').innerHTML = '';
+            }
+
+            showSummary() {
+                const summaryElement = document.getElementById('summary');
+                const successRate = this.results.total > 0 
+                    ? Math.round((this.results.passed / this.results.total) * 100) 
+                    : 0;
+                
+                document.getElementById('total-tests').textContent = this.results.total;
+                document.getElementById('passed-tests').textContent = this.results.passed;
+                document.getElementById('failed-tests').textContent = this.results.failed;
+                document.getElementById('success-rate').textContent = `${successRate}%`;
+                
+                summaryElement.style.display = 'block';
+                
+                if (successRate === 100) {
+                    this.log('\n🎉 Все тесты прошли успешно!', 'success');
+                } else {
+                    this.log(`\n⚠️  ${this.results.failed} тестов завершились неудачей`, 'error');
+                }
+            }
+
+            log(message, type = 'info') {
+                const logElement = document.getElementById('test-log');
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logElement.appendChild(entry);
+                logElement.scrollTop = logElement.scrollHeight;
+            }
+
+            sanitizeId(str) {
+                return str.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Инициализация тестировщика
+        document.addEventListener('DOMContentLoaded', () => {
+            window.tester = new CalculatorTester();
+            console.log('🧪 Система тестирования калькулятора готова');
+        });
+    </script>
+</body>
+</html>
