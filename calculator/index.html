@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Современный Калькулятор</title>
+    <meta name="description" content="Полнофункциональный калькулятор с современным дизайном">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">
+                <span class="icon">🧮</span>
+                Калькулятор
+            </h1>
+            <div class="header-controls">
+                <button class="theme-toggle" id="theme-toggle" title="Переключить тему">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button class="history-toggle" id="history-toggle" title="История вычислений">
+                    <span class="history-icon">📜</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Calculator -->
+        <main class="calculator-main">
+            <!-- History Panel -->
+            <aside class="history-panel" id="history-panel">
+                <div class="history-header">
+                    <h3>История вычислений</h3>
+                    <button class="clear-history" id="clear-history" title="Очистить историю">
+                        <span>🗑️</span>
+                    </button>
+                </div>
+                <div class="history-list" id="history-list">
+                    <div class="history-empty">История пуста</div>
+                </div>
+            </aside>
+
+            <!-- Calculator Container -->
+            <div class="calculator-container">
+                <!-- Display -->
+                <section class="display-section">
+                    <div class="display">
+                        <div class="expression" id="expression">0</div>
+                        <div class="result" id="result">0</div>
+                    </div>
+                </section>
+
+                <!-- Memory Controls -->
+                <section class="memory-section">
+                    <button class="memory-btn" id="memory-clear" title="Очистить память">MC</button>
+                    <button class="memory-btn" id="memory-recall" title="Вызвать из памяти">MR</button>
+                    <button class="memory-btn" id="memory-add" title="Добавить в память">M+</button>
+                    <button class="memory-btn" id="memory-subtract" title="Вычесть из памяти">M-</button>
+                    <button class="memory-btn" id="memory-store" title="Сохранить в память">MS</button>
+                </section>
+
+                <!-- Function Buttons -->
+                <section class="function-section">
+                    <button class="function-btn" id="btn-square" title="Квадрат">x²</button>
+                    <button class="function-btn" id="btn-sqrt" title="Квадратный корень">√x</button>
+                    <button class="function-btn" id="btn-reciprocal" title="Обратное значение">1/x</button>
+                    <button class="function-btn" id="btn-percent" title="Процент">%</button>
+                </section>
+
+                <!-- Main Button Grid -->
+                <section class="buttons-grid" role="group" aria-label="Калькулятор">
+                    <!-- Row 1 -->
+                    <button class="btn btn-clear" id="btn-clear" title="Очистить">C</button>
+                    <button class="btn btn-clear-entry" id="btn-clear-entry" title="Удалить последний ввод">CE</button>
+                    <button class="btn btn-backspace" id="btn-backspace" title="Удалить символ">⌫</button>
+                    <button class="btn btn-operator" data-operator="/" title="Деление">÷</button>
+
+                    <!-- Row 2 -->
+                    <button class="btn btn-number" data-number="7">7</button>
+                    <button class="btn btn-number" data-number="8">8</button>
+                    <button class="btn btn-number" data-number="9">9</button>
+                    <button class="btn btn-operator" data-operator="*" title="Умножение">×</button>
+
+                    <!-- Row 3 -->
+                    <button class="btn btn-number" data-number="4">4</button>
+                    <button class="btn btn-number" data-number="5">5</button>
+                    <button class="btn btn-number" data-number="6">6</button>
+                    <button class="btn btn-operator" data-operator="-" title="Вычитание">−</button>
+
+                    <!-- Row 4 -->
+                    <button class="btn btn-number" data-number="1">1</button>
+                    <button class="btn btn-number" data-number="2">2</button>
+                    <button class="btn btn-number" data-number="3">3</button>
+                    <button class="btn btn-operator" data-operator="+" title="Сложение">+</button>
+
+                    <!-- Row 5 -->
+                    <button class="btn btn-number btn-zero" data-number="0">0</button>
+                    <button class="btn btn-decimal" id="btn-decimal" title="Десятичная запятая">,</button>
+                    <button class="btn btn-equals" id="btn-equals" title="Вычислить">=</button>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="shortcuts-info">
+                <span>Горячие клавиши:</span>
+                <kbd>Enter</kbd> = Равно |
+                <kbd>Esc</kbd> = Очистить |
+                <kbd>Del</kbd> = Стереть |
+                <kbd>H</kbd> = История
+            </div>
+        </footer>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
