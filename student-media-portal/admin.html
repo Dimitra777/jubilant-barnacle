@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная панель | Медиа-портал</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Боковая навигация -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">
+                <i class="fas fa-cog"></i>
+                CMS Панель
+            </h2>
+            <button class="sidebar-toggle" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li>
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Панель управления</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="articles">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Статьи</span>
+                        <span class="badge" id="articles-count">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="create-article">
+                        <i class="fas fa-plus"></i>
+                        <span>Создать статью</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="comments">
+                        <i class="fas fa-comments"></i>
+                        <span>Комментарии</span>
+                        <span class="badge" id="comments-count">0</span>
+                    </a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Пользователи</span>
+                        <i class="fas fa-chevron-right submenu-arrow"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="#" data-subsection="all-users">Все пользователи</a></li>
+                        <li><a href="#" data-subsection="add-user">Добавить пользователя</a></li>
+                        <li><a href="#" data-subsection="roles">Управление ролями</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="media">
+                        <i class="fas fa-images"></i>
+                        <span>Медиатека</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="categories">
+                        <i class="fas fa-tags"></i>
+                        <span>Рубрики</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Настройки</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info" id="admin-user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Гость</div>
+                    <div class="user-role">Не авторизован</div>
+                </div>
+            </div>
+            <div class="sidebar-actions">
+                <a href="index.html" class="action-link" title="Перейти на сайт">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+                <button class="action-link" id="logout-btn" title="Выйти">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="admin-main">
+        <!-- Топ панель -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" id="current-page-title">Панель управления</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="notifications">
+                    <button class="notification-btn" id="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notification-badge">0</span>
+                    </button>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="quick-action-btn" id="quick-create-btn" title="Быстрое создание">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <!-- Панель управления -->
+            <section class="admin-section active" id="dashboard-section">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Статистика</h3>
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stats-row">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="dash-total-articles">0</div>
+                                    <div class="stat-label">Статей</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="dash-published-articles">0</div>
+                                    <div class="stat-label">Опубликовано</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="dash-draft-articles">0</div>
+                                    <div class="stat-label">Черновиков</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="dash-pending-articles">0</div>
+                                    <div class="stat-label">На проверке</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Последние статьи</h3>
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="recent-articles" id="recent-articles">
+                                <div class="no-data">
+                                    <i class="fas fa-file-alt"></i>
+                                    <p>Пока статей нет</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Комментарии на модерации</h3>
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="pending-comments" id="pending-comments">
+                                <div class="no-data">
+                                    <i class="fas fa-comments"></i>
+                                    <p>Нет комментариев на модерации</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Активность пользователей</h3>
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="user-activity" id="user-activity">
+                                <div class="no-data">
+                                    <i class="fas fa-users"></i>
+                                    <p>Нет данных об активности</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Управление статьями -->
+            <section class="admin-section" id="articles-section">
+                <div class="section-header">
+                    <h2>Управление статьями</h2>
+                    <div class="section-actions">
+                        <div class="filters">
+                            <select id="articles-status-filter">
+                                <option value="">Все статусы</option>
+                                <option value="draft">Черновики</option>
+                                <option value="pending">На проверке</option>
+                                <option value="published">Опубликованы</option>
+                                <option value="archived">В архиве</option>
+                            </select>
+                            
+                            <select id="articles-category-filter">
+                                <option value="">Все рубрики</option>
+                                <option value="reportage">Репортаж</option>
+                                <option value="interview">Интервью</option>
+                                <option value="opinion">Мнение</option>
+                                <option value="photoproject">Фотопроект</option>
+                                <option value="podcast">Подкасты</option>
+                                <option value="news">Новости</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="create-new-article-btn">
+                            <i class="fas fa-plus"></i>
+                            Создать статью
+                        </button>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>Заголовок</th>
+                                <th>Автор</th>
+                                <th>Рубрика</th>
+                                <th>Статус</th>
+                                <th>Дата</th>
+                                <th>Просмотры</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-table-body">
+                            <tr class="no-data-row">
+                                <td colspan="7">
+                                    <div class="no-data">
+                                        <i class="fas fa-file-alt"></i>
+                                        <p>Статей пока нет</p>
+                                        <button class="btn btn-primary" onclick="showSection('create-article')">
+                                            Создать первую статью
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Создание/редактирование статьи -->
+            <section class="admin-section" id="create-article-section">
+                <div class="section-header">
+                    <h2 id="article-form-title">Создание статьи</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" id="save-draft-btn">
+                            <i class="fas fa-save"></i>
+                            Сохранить черновик
+                        </button>
+                        <button class="btn btn-primary" id="submit-article-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Отправить на проверку
+                        </button>
+                    </div>
+                </div>
+
+                <form class="article-form" id="article-form">
+                    <input type="hidden" id="article-id" value="">
+                    
+                    <div class="form-grid">
+                        <div class="form-main">
+                            <div class="form-group">
+                                <label for="article-title">Заголовок статьи *</label>
+                                <input type="text" id="article-title" class="form-control" required>
+                                <small class="form-help">Максимум 120 символов</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-lead">Лид (краткое описание) *</label>
+                                <textarea id="article-lead" class="form-control" rows="3" required></textarea>
+                                <small class="form-help">Краткое описание статьи, максимум 300 символов</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-content">Содержание статьи *</label>
+                                <div id="article-editor" class="editor"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-sidebar">
+                            <div class="form-group">
+                                <label for="article-category">Рубрика *</label>
+                                <select id="article-category" class="form-control" required>
+                                    <option value="">Выберите рубрику</option>
+                                    <option value="reportage">Репортаж</option>
+                                    <option value="interview">Интервью</option>
+                                    <option value="opinion">Мнение</option>
+                                    <option value="photoproject">Фотопроект</option>
+                                    <option value="podcast">Подкасты</option>
+                                    <option value="news">Новости</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-tags">Теги</label>
+                                <input type="text" id="article-tags" class="form-control" placeholder="Введите теги через запятую">
+                                <small class="form-help">Используйте запятую для разделения тегов</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Главное изображение</label>
+                                <div class="image-upload">
+                                    <input type="file" id="article-image" accept="image/*" class="file-input">
+                                    <div class="image-preview" id="article-image-preview">
+                                        <div class="upload-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <p>Нажмите для выбора изображения</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-meta-title">SEO заголовок</label>
+                                <input type="text" id="article-meta-title" class="form-control">
+                                <small class="form-help">Заголовок для поисковых систем</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-meta-description">SEO описание</label>
+                                <textarea id="article-meta-description" class="form-control" rows="2"></textarea>
+                                <small class="form-help">Описание для поисковых систем</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="article-status">Статус</label>
+                                <select id="article-status" class="form-control">
+                                    <option value="draft">Черновик</option>
+                                    <option value="pending">На проверке</option>
+                                    <option value="published">Опубликовано</option>
+                                    <option value="archived">В архиве</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="article-allow-comments"> 
+                                    Разрешить комментарии
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Управление комментариями -->
+            <section class="admin-section" id="comments-section">
+                <div class="section-header">
+                    <h2>Управление комментариями</h2>
+                    <div class="section-actions">
+                        <div class="filters">
+                            <select id="comments-status-filter">
+                                <option value="">Все комментарии</option>
+                                <option value="pending">На модерации</option>
+                                <option value="approved">Одобрены</option>
+                                <option value="rejected">Отклонены</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comments-list" id="comments-list">
+                    <div class="no-data">
+                        <i class="fas fa-comments"></i>
+                        <p>Комментариев пока нет</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Другие секции (пользователи, медиатека и т.д.) -->
+            <section class="admin-section" id="users-section">
+                <div class="section-header">
+                    <h2>Управление пользователями</h2>
+                    <button class="btn btn-primary" id="add-user-btn">
+                        <i class="fas fa-plus"></i>
+                        Добавить пользователя
+                    </button>
+                </div>
+                <div class="users-content">
+                    <!-- Содержимое будет добавлено динамически -->
+                </div>
+            </section>
+
+            <!-- Медиатека -->
+            <section class="admin-section" id="media-section">
+                <div class="section-header">
+                    <h2>Медиатека</h2>
+                    <button class="btn btn-primary" id="upload-media-btn">
+                        <i class="fas fa-upload"></i>
+                        Загрузить файлы
+                    </button>
+                </div>
+                <div class="media-content">
+                    <!-- Содержимое будет добавлено динамически -->
+                </div>
+            </section>
+
+            <!-- Настройки -->
+            <section class="admin-section" id="settings-section">
+                <div class="section-header">
+                    <h2>Настройки системы</h2>
+                </div>
+                <div class="settings-content">
+                    <!-- Настройки будут добавлены динамически -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="user-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="user-modal-title">Добавить пользователя</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Форма пользователя -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Скрипты -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/articles.js"></script>
+    <script src="js/comments.js"></script>
+    <script src="js/media.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

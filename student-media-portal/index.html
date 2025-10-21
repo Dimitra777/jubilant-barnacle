@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студенческий медиа-портал | Факультет журналистики</title>
+    <meta name="description" content="Студенческий медиа-портал факультета журналистики - новости, интервью, репортажи и мультимедийные материалы">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 class="logo">
+                        <i class="fas fa-newspaper"></i>
+                        Медиа-портал ФЖ
+                    </h1>
+                </div>
+                
+                <div class="nav-menu" id="nav-menu">
+                    <ul class="nav-list">
+                        <li><a href="#" class="nav-link active" data-section="home">Главная</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">Рубрики <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" data-category="reportage">Репортаж</a></li>
+                                <li><a href="#" data-category="interview">Интервью</a></li>
+                                <li><a href="#" data-category="opinion">Мнение</a></li>
+                                <li><a href="#" data-category="photoproject">Фотопроект</a></li>
+                                <li><a href="#" data-category="podcast">Подкасты</a></li>
+                                <li><a href="#" data-category="news">Новости</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="nav-link" data-section="authors">Авторы</a></li>
+                        <li><a href="#" class="nav-link" data-section="about">О нас</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-actions">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Поиск по сайту...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="auth-btn" id="auth-btn">
+                        <i class="fas fa-user"></i>
+                        Вход
+                    </button>
+                </div>
+
+                <button class="nav-toggle" id="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main">
+        <!-- Главная страница -->
+        <section class="home-section active" id="home-section">
+            <div class="container">
+                <!-- Герой секция с главными новостями -->
+                <section class="hero-section">
+                    <h2 class="section-title">Главные новости</h2>
+                    <div class="hero-content" id="hero-content">
+                        <div class="main-article-placeholder">
+                            <div class="placeholder-content">
+                                <i class="fas fa-newspaper"></i>
+                                <p>Загрузка главных новостей...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Фильтры и сортировка -->
+                <div class="controls-bar">
+                    <div class="filters">
+                        <select id="category-filter">
+                            <option value="">Все рубрики</option>
+                            <option value="reportage">Репортаж</option>
+                            <option value="interview">Интервью</option>
+                            <option value="opinion">Мнение</option>
+                            <option value="photoproject">Фотопроект</option>
+                            <option value="podcast">Подкасты</option>
+                            <option value="news">Новости</option>
+                        </select>
+                        
+                        <select id="sort-filter">
+                            <option value="date">По дате</option>
+                            <option value="views">По популярности</option>
+                            <option value="likes">По лайкам</option>
+                        </select>
+                    </div>
+
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Сетка">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list" title="Список">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Лента статей -->
+                <section class="articles-section">
+                    <div class="articles-grid" id="articles-grid">
+                        <div class="articles-placeholder">
+                            <div class="placeholder-content">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Загрузка статей...</p>
+                                <small>Пока статей нет. <a href="#" id="create-article-link">Создайте первую статью</a></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="load-more">
+                        <button class="btn btn-outline" id="load-more-btn" style="display: none;">
+                            Показать еще
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- Страница авторов -->
+        <section class="authors-section" id="authors-section">
+            <div class="container">
+                <h2 class="page-title">Наши авторы</h2>
+                <div class="authors-grid" id="authors-grid">
+                    <div class="authors-placeholder">
+                        <div class="placeholder-content">
+                            <i class="fas fa-users"></i>
+                            <p>Пока авторов нет</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- О нас -->
+        <section class="about-section" id="about-section">
+            <div class="container">
+                <h2 class="page-title">О проекте</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Добро пожаловать в студенческий медиа-портал</h3>
+                        <p>Наш портал - это современная площадка для публикации работ студентов факультета журналистики. Здесь вы найдете:</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Актуальные репортажи и новости</li>
+                            <li><i class="fas fa-check"></i> Интересные интервью</li>
+                            <li><i class="fas fa-check"></i> Авторские мнения и аналитику</li>
+                            <li><i class="fas fa-check"></i> Фотопроекты и мультимедиа</li>
+                            <li><i class="fas fa-check"></i> Подкасты и аудиоматериалы</li>
+                        </ul>
+                    </div>
+                    <div class="about-stats">
+                        <h3>Статистика портала</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="stats-articles">0</div>
+                                <div class="stat-label">Статей</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="stats-authors">0</div>
+                                <div class="stat-label">Авторов</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="stats-comments">0</div>
+                                <div class="stat-label">Комментариев</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="stats-views">0</div>
+                                <div class="stat-label">Просмотров</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Медиа-портал ФЖ</h3>
+                    <p>Современная площадка для публикации студенческих работ факультета журналистики</p>
+                    <div class="social-links">
+                        <a href="#" title="VK"><i class="fab fa-vk"></i></a>
+                        <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Рубрики</h4>
+                    <ul>
+                        <li><a href="#" data-category="news">Новости</a></li>
+                        <li><a href="#" data-category="reportage">Репортажи</a></li>
+                        <li><a href="#" data-category="interview">Интервью</a></li>
+                        <li><a href="#" data-category="opinion">Мнения</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Подписка</h4>
+                    <p>Получайте уведомления о новых статьях</p>
+                    <form class="subscribe-form" id="subscribe-form">
+                        <input type="email" placeholder="Ваш email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Медиа-портал факультета журналистики. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <!-- Модальное окно статьи -->
+    <div class="modal" id="article-modal">
+        <div class="modal-content article-modal-content">
+            <button class="modal-close" id="article-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="article-content" id="article-content">
+                <!-- Содержимое статьи будет загружено динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно поиска -->
+    <div class="modal" id="search-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Результаты поиска</h3>
+                <button class="modal-close" id="search-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-results" id="search-results">
+                    <!-- Результаты поиска -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Скрипты -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/articles.js"></script>
+    <script src="js/comments.js"></script>
+    <script src="js/media.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
