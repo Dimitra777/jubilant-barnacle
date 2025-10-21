@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему | Медиа-портал</title>
+    <meta name="description" content="Авторизация в системе управления медиа-порталом">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="auth-pattern"></div>
+        </div>
+        
+        <div class="auth-content">
+            <!-- Заголовок -->
+            <header class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-newspaper"></i>
+                    <h1>Медиа-портал ФЖ</h1>
+                </div>
+                <p class="auth-subtitle">Система управления контентом</p>
+            </header>
+
+            <!-- Переключатель форм -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-form="login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Вход
+                </button>
+                <button class="auth-tab" data-form="register">
+                    <i class="fas fa-user-plus"></i>
+                    Регистрация
+                </button>
+            </div>
+
+            <!-- Форма входа -->
+            <div class="auth-form-container active" id="login-form-container">
+                <form class="auth-form" id="login-form">
+                    <h2 class="form-title">Войти в систему</h2>
+                    <p class="form-subtitle">Введите данные для доступа к панели управления</p>
+
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Пароль</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="login-password" class="form-control" placeholder="Введите пароль" required>
+                            <button type="button" class="password-toggle" id="login-password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Запомнить меня
+                        </label>
+                        
+                        <a href="#" class="forgot-link" id="forgot-password-link">
+                            Забыли пароль?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Войти
+                        <div class="btn-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+
+                    <!-- Демо пользователи -->
+                    <div class="demo-users">
+                        <p class="demo-title">Демо пользователи:</p>
+                        <div class="demo-user-buttons">
+                            <button type="button" class="demo-user-btn" data-email="admin@media.ru" data-password="admin123" data-role="admin">
+                                <i class="fas fa-crown"></i>
+                                Администратор
+                            </button>
+                            <button type="button" class="demo-user-btn" data-email="editor@media.ru" data-password="editor123" data-role="editor">
+                                <i class="fas fa-edit"></i>
+                                Редактор
+                            </button>
+                            <button type="button" class="demo-user-btn" data-email="author@media.ru" data-password="author123" data-role="author">
+                                <i class="fas fa-pen"></i>
+                                Автор
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Форма регистрации -->
+            <div class="auth-form-container" id="register-form-container">
+                <form class="auth-form" id="register-form">
+                    <h2 class="form-title">Создать аккаунт</h2>
+                    <p class="form-subtitle">Заполните форму для регистрации</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-firstname">Имя</label>
+                            <div class="input-group">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="register-firstname" class="form-control" placeholder="Имя" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-lastname">Фамилия</label>
+                            <div class="input-group">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="register-lastname" class="form-control" placeholder="Фамилия" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="register-email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                        <small class="form-help">Используйте университетскую почту</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password">Пароль</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-password" class="form-control" placeholder="Минимум 6 символов" required minlength="6">
+                            <button type="button" class="password-toggle" id="register-password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="password-strength"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password-confirm">Подтвердите пароль</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-password-confirm" class="form-control" placeholder="Повторите пароль" required>
+                            <button type="button" class="password-toggle" id="register-password-confirm-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-role">Роль</label>
+                        <select id="register-role" class="form-control" required>
+                            <option value="">Выберите роль</option>
+                            <option value="author">Автор</option>
+                            <option value="editor">Редактор</option>
+                        </select>
+                        <small class="form-help">Администратор может назначить роль позже</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-bio">О себе</label>
+                        <textarea id="register-bio" class="form-control" rows="3" placeholder="Расскажите о себе (необязательно)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="agree-terms" required>
+                            <span class="checkmark"></span>
+                            Согласен с <a href="#" class="link">правилами использования</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Зарегистрироваться
+                        <div class="btn-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+
+                    <p class="form-note">
+                        <i class="fas fa-info-circle"></i>
+                        Регистрация требует подтверждения администратора
+                    </p>
+                </form>
+            </div>
+
+            <!-- Кнопка возврата -->
+            <div class="auth-footer">
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Вернуться на сайт
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно восстановления пароля -->
+    <div class="modal" id="forgot-password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Восстановление пароля</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="forgot-password-form">
+                    <p>Введите email для отправки инструкций по восстановлению пароля</p>
+                    
+                    <div class="form-group">
+                        <label for="forgot-email">Email</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="forgot-email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline modal-close-btn">Отмена</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Отправить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Скрипты -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Инициализация страницы авторизации
+        document.addEventListener('DOMContentLoaded', function() {
+            initAuthPage();
+        });
+
+        function initAuthPage() {
+            // Переключение между формами
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const formContainers = document.querySelectorAll('.auth-form-container');
+
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetForm = tab.dataset.form;
+                    
+                    // Обновляем активные табы
+                    authTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Переключаем формы
+                    formContainers.forEach(container => {
+                        container.classList.remove('active');
+                        if (container.id === `${targetForm}-form-container`) {
+                            container.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Демо пользователи
+            const demoUserBtns = document.querySelectorAll('.demo-user-btn');
+            demoUserBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const email = btn.dataset.email;
+                    const password = btn.dataset.password;
+                    
+                    document.getElementById('login-email').value = email;
+                    document.getElementById('login-password').value = password;
+                    
+                    // Можно автоматически войти
+                    // document.getElementById('login-form').dispatchEvent(new Event('submit'));
+                });
+            });
+
+            // Показать/скрыть пароль
+            const passwordToggles = document.querySelectorAll('.password-toggle');
+            passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const input = toggle.parentElement.querySelector('input');
+                    const icon = toggle.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                });
+            });
+
+            // Проверка силы пароля
+            const passwordInput = document.getElementById('register-password');
+            const strengthIndicator = document.getElementById('password-strength');
+            
+            if (passwordInput && strengthIndicator) {
+                passwordInput.addEventListener('input', () => {
+                    const password = passwordInput.value;
+                    const strength = checkPasswordStrength(password);
+                    
+                    strengthIndicator.className = `password-strength ${strength.class}`;
+                    strengthIndicator.textContent = strength.text;
+                });
+            }
+
+            // Модальное окно восстановления пароля
+            const forgotLink = document.getElementById('forgot-password-link');
+            const forgotModal = document.getElementById('forgot-password-modal');
+            
+            if (forgotLink) {
+                forgotLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    forgotModal.classList.add('active');
+                });
+            }
+
+            // Закрытие модального окна
+            const modalCloses = document.querySelectorAll('.modal-close, .modal-close-btn');
+            modalCloses.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    forgotModal.classList.remove('active');
+                });
+            });
+        }
+
+        function checkPasswordStrength(password) {
+            if (password.length < 6) {
+                return { class: 'weak', text: 'Слабый пароль' };
+            } else if (password.length < 10) {
+                return { class: 'medium', text: 'Средний пароль' };
+            } else {
+                return { class: 'strong', text: 'Сильный пароль' };
+            }
+        }
+    </script>
+</body>
+</html>
